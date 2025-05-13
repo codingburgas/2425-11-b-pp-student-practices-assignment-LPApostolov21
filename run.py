@@ -1,11 +1,15 @@
 from flask import Flask
+from Mech.auth import auth as auth_blueprint
+from Mech.main import main as main_blueprint
 
-app = Flask(__name__)
+def create_app():
+    app = Flask(__name__)
 
-@app.route("/")
-def index():
-    return "Welcome to my site!"
+    app.register_blueprint(auth_blueprint)
+    app.register_blueprint(main_blueprint)
 
-if __name__ == "__main__":
+    return app
+
+if __name__ == '__main__':
+    app = create_app()
     app.run(debug=True)
-
