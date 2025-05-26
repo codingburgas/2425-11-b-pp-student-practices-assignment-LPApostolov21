@@ -1,0 +1,14 @@
+User Stories
+
+As a user of the site i would like to be able to:
+
+to add car models
+to see already made predictions of popular cars
+to be able to add characteristics 
+to get a price prediction based on the information i give
+to be able to fill out a feedback 
+to be sent a detailed email of the car to my personal email
+
+As admin i would like to be able to:
+
+see all created user account and being able to delete them
