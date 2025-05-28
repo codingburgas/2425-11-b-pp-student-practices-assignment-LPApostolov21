@@ -1,10 +1,10 @@
-from flask import Blueprint
+from flask import Blueprint, render_template
 
 main = Blueprint('main', __name__, template_folder='templates')
 
-@main.route('/')
+@main.route('/main')
 def index():
-    return "Welcome to the Main Page"
+    return render_template('main.html')
 
 @main.route('/about')
 def about():

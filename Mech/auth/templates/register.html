@@ -2,12 +2,11 @@
 <html lang="en">
 <head>
     <title>Register</title>
-    <!-- You can include Bootstrap CSS here if you want -->
 </head>
 <body>
     <h2>Register</h2>
     <form method="POST" action="{{ url_for('auth.register') }}">
-        {{ form.hidden_tag() }}  <!-- CSRF token -->
+        {{ form.hidden_tag() }}
 
         <p>
             {{ form.username.label }}<br>

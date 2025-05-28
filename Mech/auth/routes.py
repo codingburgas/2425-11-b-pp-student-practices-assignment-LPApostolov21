@@ -1,15 +1,16 @@
-from flask import Blueprint, render_template, redirect, url_for
+from flask import Blueprint, render_template, redirect, url_for, flash
 from werkzeug.security import generate_password_hash
-
-from forms import RegisterForm
+from forms import RegisterForm, LoginForm
 from models import db, User
+from werkzeug.security import check_password_hash
+from flask import request
 
 
 
 auth = Blueprint('auth', __name__, template_folder='templates')
 
 
-@auth.route('/register', methods=['GET', 'POST'])
+@auth.route('/', methods=['GET', 'POST'])
 def register():
     form = RegisterForm()
     if form.validate_on_submit():
@@ -26,9 +27,21 @@ def register():
 
     return render_template('register.html', form=form)
 
-@auth.route('/login')
+@auth.route('/login', methods=['GET', 'POST'])
 def login():
-    return "Login Page"
+    form = LoginForm()
+    if form.validate_on_submit():
+        username = form.username.data
+        password = form.password.data
+        existing_user = User.query.filter_by(username=username).first()
+
+        if existing_user and check_password_hash(existing_user.password_hash, password):
+            flash("Login successful!", "success")
+            return redirect(url_for('main.index'))
+        else:
+            flash('Invalid username or password', 'danger')
+    return render_template('login.html', form=form)
+
 
 @auth.route('/logout')
 def logout():
