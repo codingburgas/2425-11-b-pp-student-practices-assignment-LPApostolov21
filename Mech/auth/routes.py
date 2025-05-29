@@ -1,10 +1,9 @@
 from flask import Blueprint, render_template, redirect, url_for, flash
+from flask_login import logout_user
 from werkzeug.security import generate_password_hash
 from forms import RegisterForm, LoginForm
 from models import db, User
 from werkzeug.security import check_password_hash
-from flask import request
-
 
 
 auth = Blueprint('auth', __name__, template_folder='templates')
@@ -18,6 +17,7 @@ def register():
         password = form.password.data
         existing_user = User.query.filter_by(username=username).first()
         if existing_user:
+            flash('This user already exists. Please choose a different email or username.', 'warning')
             return render_template('register.html', form=form)
         hashed_password = generate_password_hash(password, method='scrypt')
         new_user = User(username=username, password_hash=hashed_password)
@@ -45,4 +45,6 @@ def login():
 
 @auth.route('/logout')
 def logout():
-    return "Logout Page"
+    logout_user()
+    flash("You have been logged out.", "info")
+    return redirect(url_for('auth.login'))
