@@ -1,1 +1,66 @@
-hello world
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Car Predictor</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f4f8;
+        }
+        .hero-section {
+            height: 100vh;
+            width: 100vw;
+            background-image: url('https://media.istockphoto.com/id/1176654815/vector/car-service-seamless-pattern-with-thin-line-icons.jpg?s=612x612&w=0&k=20&c=UwuQ3KgfvIFnR6pcUZrDYWNPJPsF6bguULwOT0nKeYA=');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            color: white;
+        }
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.4);
+            z-index: 1;
+        }
+        .content-wrapper {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <nav class="bg-gray-800 p-4 shadow-lg">
+        <div class="container mx-auto flex justify-between items-center">
+            <a href="#" class="text-white text-2xl font-bold rounded-md px-3 py-2 hover:bg-gray-700 transition duration-300">
+                CarPredict
+            </a>
+            <div class="flex space-x-4">
+                <a href="#" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition duration-300">Home</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="hero-section">
+        <div class="content-wrapper">
+            <h1 class="text-5xl md:text-6xl font-extrabold mb-8 drop-shadow-lg">
+                Find out the price of your car!
+            </h1>
+            <button class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 px-8 rounded-full shadow-lg transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-opacity-50">
+                Predict
+            </button>
+        </div>
+    </div>
+</body>
+</html>
