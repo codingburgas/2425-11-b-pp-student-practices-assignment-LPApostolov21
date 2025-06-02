@@ -10,6 +10,7 @@
             font-family: 'Inter', sans-serif;
             background-color: #f0f4f8;
         }
+
         .hero-section {
             height: 100vh;
             width: 100vw;
@@ -57,9 +58,7 @@
             <h1 class="text-5xl md:text-6xl font-extrabold mb-8 drop-shadow-lg">
                 Find out the price of your car!
             </h1>
-            <button class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 px-8 rounded-full shadow-lg transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-opacity-50">
-                Predict
-            </button>
+            <a href="{{ url_for('main.predict') }}">Predict here</a>
         </div>
     </div>
 </body>
