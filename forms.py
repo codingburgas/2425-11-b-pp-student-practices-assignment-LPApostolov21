@@ -1,6 +1,7 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField
-from wtforms.validators import DataRequired, Length, EqualTo
+from wtforms import StringField, PasswordField, SubmitField, IntegerField
+from wtforms.validators import DataRequired, Length, EqualTo, NumberRange
+
 
 class RegisterForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired(), Length(min=3, max=20)])
@@ -14,7 +15,7 @@ class LoginForm(FlaskForm):
     submit = SubmitField('Login')
 
 class LogisticsForm(FlaskForm):
-    car_brand = StringField('car_brand', validators=[DataRequired(), Length(min=3, max=20)])
-    mileage = StringField('mileage', validators=[DataRequired(), Length(min=3, max=20)])
-    man_year = StringField('man_year', validators=[DataRequired(), Length(min=3, max=20)])
+    car_brand = StringField('Car Brand', validators=[DataRequired(), Length(min=3, max=20)])
+    mileage = IntegerField('Mileage (In kilometers)', validators=[DataRequired(), NumberRange(min=100)])  # Example range
+    man_year = IntegerField('Year of manufacture', validators=[DataRequired(), NumberRange(min=1900, max=2100)])
     submit = SubmitField('Predict')

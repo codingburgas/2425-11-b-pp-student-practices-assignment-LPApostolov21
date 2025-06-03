@@ -13,3 +13,9 @@ class User(db.Model):
 
     def verify_password(self, plaintext_password):
         return check_password_hash(self.password_hash, plaintext_password)
+
+class Cars(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    car_brand = db.Column(db.String(20), nullable=False)
+    mileage = db.Column(db.Integer, nullable=False)
+    man_year = db.Column(db.Integer, nullable=False)
