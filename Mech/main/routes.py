@@ -25,7 +25,18 @@ def predict():
         return redirect(url_for('main.model_pred'))
     return render_template('predict.html', form=form)
 
+
 @main.route('/model_pred', methods=['GET', 'POST'])
 def model_pred():
+    latest_car = Cars.query.order_by(Cars.id.desc()).first()
 
-    return render_template('model_pred.html')
+    if latest_car:
+        car_brand = latest_car.car_brand
+        mileage = latest_car.mileage
+        man_year = latest_car.man_year
+    else:
+        car_brand = None
+        mileage = None
+        man_year = None
+
+    return render_template('model_pred.html', car_brand=car_brand, mileage=mileage, man_year=man_year)
