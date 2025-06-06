@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, flash, redirect, url_for
 from flask_login import login_required
-
+import random
 from forms import LogisticsForm
 from models import db, Cars
 
@@ -38,5 +38,7 @@ def model_pred():
         car_brand = None
         mileage = None
         man_year = None
+    class LinearRegression(th = 0.8, b = 0, lr = 0.01):
+        pass
 
     return render_template('model_pred.html', car_brand=car_brand, mileage=mileage, man_year=man_year)
