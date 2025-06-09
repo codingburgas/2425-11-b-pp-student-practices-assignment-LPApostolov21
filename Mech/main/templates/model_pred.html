@@ -14,3 +14,8 @@
         </tr>
     </tbody>
 </table>
+
+<h1>Will your car sell for more than 2500$</h1>
+{% if prediction is not none %}
+  <p>Prediction: {{ prediction }}</p>
+{% endif %}

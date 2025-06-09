@@ -16,6 +16,6 @@ class LoginForm(FlaskForm):
 
 class LogisticsForm(FlaskForm):
     car_brand = StringField('Car Brand', validators=[DataRequired(), Length(min=3, max=20)])
-    mileage = IntegerField('Mileage (In kilometers)', validators=[DataRequired(), NumberRange(min=100)])  # Example range
-    man_year = IntegerField('Year of manufacture', validators=[DataRequired(), NumberRange(min=1900, max=2100)])
+    mileage = IntegerField('Mileage (In kilometers)', validators=[DataRequired(), NumberRange(min=100000)])
+    man_year = IntegerField('Year of manufacture', validators=[DataRequired(), NumberRange(min=1997, max=2006)])
     submit = SubmitField('Predict')
