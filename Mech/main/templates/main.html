@@ -14,7 +14,7 @@
         .hero-section {
             height: 100vh;
             width: 100vw;
-            background-image: url('https://media.istockphoto.com/id/1176654815/vector/car-service-seamless-pattern-with-thin-line-icons.jpg?s=612x612&w=0&k=20&c=UwuQ3KgfvIFnR6pcUZrDYWNPJPsF6bguULwOT0nKeYA=');
+            background-image: url('https://cdn.dribbble.com/userupload/28682832/file/original-9bdebc88e96730cd6681c454fd2cb60e.gif');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -39,26 +39,43 @@
             z-index: 2;
             text-align: center;
         }
+
+        .this-button {
+          margin: 10px;                /* Adds space around the button */
+          padding: 10px 20px;          /* Space inside the button */
+          background-color: #007bff;   /* Bootstrap primary color */
+          color: white;                /* Text color */
+          border: none;                /* No border */
+          border-radius: 5px;          /* Rounded corners */
+          cursor: pointer;             /* Pointer cursor on hover */
+          font-size: 16px;             /* Slightly larger text */
+          transition: background-color 0.3s; /* Smooth hover effect */
+        }
+
+        .this-button:hover {
+          background-color: #0056b3;   /* Darker on hover */
+        }
     </style>
 </head>
 <body>
     <nav class="bg-gray-800 p-4 shadow-lg">
-        <div class="container mx-auto flex justify-between items-center">
+        <div class="container mx-auto flex justify-center items-center">
             <a href="#" class="text-white text-2xl font-bold rounded-md px-3 py-2 hover:bg-gray-700 transition duration-300">
                 CarPredict
             </a>
-            <div class="flex space-x-4">
-                <a href="#" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition duration-300">Home</a>
-            </div>
         </div>
     </nav>
+
 
     <div class="hero-section">
         <div class="content-wrapper">
             <h1 class="text-5xl md:text-6xl font-extrabold mb-8 drop-shadow-lg">
                 Find out the price of your car!
             </h1>
-            <a href="{{ url_for('main.predict') }}">Predict here</a>
+            <div class = "this-button">
+                <a href="{{ url_for('main.predict') }}">Predict here</a>
+            </div>
+
         </div>
     </div>
 </body>

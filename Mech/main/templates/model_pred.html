@@ -1,21 +1,90 @@
-<table border="1">
-    <thead>
-        <tr>
-            <th>Car Brand</th>
-            <th>Mileage</th>
-            <th>Manufacture Year</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>{{ car_brand }}</td>
-            <td>{{ mileage }}</td>
-            <td>{{ man_year }}</td>
-        </tr>
-    </tbody>
-</table>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>🚗 Car Price Prediction</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #dbeafe, #e0f2fe);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding: 30px 0;
+        }
+        .card {
+            border: none;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            background: white;
+        }
+        .chart-img {
+            border: 2px solid #ced4da;
+            border-radius: 12px;
+            padding: 10px;
+            background: #ffffff;
+            width: 100%;
+            transition: transform 0.3s;
+        }
+        .chart-img:hover {
+            transform: scale(1.02);
+        }
+        .btn-custom {
+            background-color: #0077b6;
+            color: white;
+            border-radius: 8px;
+            padding: 10px 20px;
+            transition: 0.3s ease;
+        }
+        .btn-custom:hover {
+            background-color: #023e8a;
+        }
+        .title-icon {
+            font-size: 1.5rem;
+            color: #0077b6;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card p-4">
+            <div class="card-body">
+                <h2 class="text-center mb-4">
+                    <i class="bi bi-bar-chart-line-fill title-icon me-2"></i>
+                    Car Price Prediction Result
+                </h2>
 
-<h1>Will your car sell for more than 2500$</h1>
-{% if prediction is not none %}
-  <p>Prediction: {{ prediction }}</p>
-{% endif %}
+                <div class="row g-4">
+                    <div class="col-md-6">
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item bg-light">
+                                <strong>🚘 Brand:</strong> {{ car.car_brand }}
+                            </li>
+                            <li class="list-group-item bg-light">
+                                <strong>🛣️ Mileage:</strong> {{ car.mileage }} km
+                            </li>
+                            <li class="list-group-item bg-light">
+                                <strong>🏭 Year:</strong> {{ car.man_year }}
+                            </li>
+                            <li class="list-group-item bg-light">
+                                <strong>💰 Predicted Price:</strong>
+                                <span class="text-success fw-bold">${{ predicted_price }}</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="col-md-6">
+                        <h5 class="mb-3">📈 Prediction Chart</h5>
+                        <img src="data:image/png;base64,{{ plot_url }}" alt="Prediction Plot" class="chart-img">
+                    </div>
+                </div>
+
+                <div class="text-center mt-4">
+                    <a href="{{ url_for('main.predict') }}" class="btn btn-custom">
+                        🔁 Predict Another Car
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,8 +1,11 @@
 from flask import Blueprint, render_template, flash, redirect, url_for
-from flask_login import login_required
-import random
+from flask import Response
 from forms import LogisticsForm
 from models import db, Cars
+from sklearn.linear_model import LinearRegression
+import matplotlib.pyplot as plt
+import io
+import base64
 
 main = Blueprint('main', __name__, template_folder='templates')
 
@@ -26,80 +29,54 @@ def predict():
     return render_template('predict.html', form=form)
 
 
-@main.route('/model_pred', methods=['GET', 'POST'])
+@main.route('/model_pred', methods=['GET'])
 def model_pred():
-    latest_car = Cars.query.order_by(Cars.id.desc()).first()
+    # Sample training data
+    data = [
+        (50000, 2015, 15000),
+        (30000, 2018, 20000),
+        (100000, 2012, 8000),
+        (70000, 2016, 12000),
+        (25000, 2020, 25000),
+    ]
 
-    prediction = None  # Default
+    X = [[mileage, year] for mileage, year, _ in data]
+    y = [price for _, _, price in data]
 
-    if latest_car:
-        car_brand = latest_car.car_brand
-        mileage = latest_car.mileage
-        man_year = latest_car.man_year
+    # Train model
+    model = LinearRegression()
+    model.fit(X, y)
 
-        # --- Training Data (example)
-        data = [
-            (500500, 2006, 1),
-            (400400, 2005, 0),
-            (300300, 2004, 1),
-            (200200, 2003, 0),
-            (100100, 2002, 1),
-            (500000, 2001, 0),
-            (400000, 2000, 1),
-            (300000, 1999, 0),
-            (200000, 1998, 1),
-            (100000, 1997, 0)
-        ]
+    def predict_price(mileage, man_year):
+        return model.predict([[mileage, man_year]])[0]
 
-        # --- Helper: Mean
-        def mean(values):
-            return sum(values) / len(values)
+    car = Cars.query.order_by(Cars.id.desc()).first()
+    if not car:
+        flash("No car data available.")
+        return redirect(url_for('main.predict'))
 
-        # --- Extract and Normalize
-        mileages = [d[0] for d in data]
-        years = [d[1] for d in data]
-        labels = [d[2] for d in data]
+    predicted_price = predict_price(car.mileage, car.man_year)
 
-        mean_mileage = mean(mileages)
-        mean_year = mean(years)
+    # --- Matplotlib visualization ---
+    fig, ax = plt.subplots()
+    mileage_data = [m for m, _, _ in data]
+    price_data = [p for _, _, p in data]
 
-        mileages = [m - mean_mileage for m in mileages]
-        years = [y - mean_year for y in years]
+    # Scatter training data
+    ax.scatter(mileage_data, price_data, color='blue', label='Training Data')
+    # Plot the predicted point
+    ax.scatter(car.mileage, predicted_price, color='red', label='Predicted Car', marker='x', s=100)
+    ax.set_xlabel('Mileage')
+    ax.set_ylabel('Price')
+    ax.set_title('Car Price Prediction')
+    ax.legend()
 
-        # --- Gradient Descent
-        w0, w1, w2 = 0.0, 0.0, 0.0
-        learning_rate = 0.00000001
-        epochs = 1000
+    # Convert plot to PNG image
+    buf = io.BytesIO()
+    plt.savefig(buf, format='png')
+    buf.seek(0)
+    image_base64 = base64.b64encode(buf.getvalue()).decode('utf-8')
+    buf.close()
+    plt.close()
 
-        for _ in range(epochs):
-            dw0, dw1, dw2 = 0.0, 0.0, 0.0
-            for i in range(len(data)):
-                x1 = mileages[i]
-                x2 = years[i]
-                y = labels[i]
-                y_pred = w0 + w1 * x1 + w2 * x2
-                error = y_pred - y
-                dw0 += error
-                dw1 += error * x1
-                dw2 += error * x2
-            w0 -= learning_rate * dw0
-            w1 -= learning_rate * dw1
-            w2 -= learning_rate * dw2
-
-        # --- Predict
-        def predict(mileage_input, year_input):
-            x1 = mileage_input - mean_mileage
-            x2 = year_input - mean_year
-            y_pred = w0 + w1 * x1 + w2 * x2
-            return "Yes" if y_pred >= 0.5 else "No"
-
-        prediction = predict(mileage, man_year)
-
-        return render_template('model_pred.html',
-                               car_brand=car_brand,
-                               mileage=mileage,
-                               man_year=man_year,
-                               prediction=prediction)
-
-    # If no car found
-    return render_template('model_pred.html', prediction="No car found.")
+    return render_template('model_pred.html', car=car, predicted_price=round(predicted_price, 2), plot_url=image_base64)
