@@ -1,10 +1,8 @@
 from flask import Blueprint, render_template, redirect, url_for, flash
-from flask_login import logout_user
-from werkzeug.security import generate_password_hash
+from flask_login import logout_user, login_user  # <-- ADD THIS
+from werkzeug.security import generate_password_hash, check_password_hash
 from forms import RegisterForm, LoginForm
 from models import db, User, Admin
-from werkzeug.security import check_password_hash
-
 
 auth = Blueprint('auth', __name__, template_folder='templates')
 
@@ -18,19 +16,18 @@ def register():
         role = form.role.data
         hashed_password = generate_password_hash(password, method='scrypt')
 
+        existing_admin = Admin.query.filter_by(username_admin=username).first()
+        existing_user = User.query.filter_by(username=username).first()
+
+        if existing_admin or existing_user:
+            flash('This username is already taken. Please choose a different one.', 'warning')
+            return render_template('register.html', form=form)
+
         if role == 'admin':
-            existing_admin = Admin.query.filter_by(username_admin=username).first()
-            if existing_admin:
-                flash('This admin already exists. Please choose a different username.', 'warning')
-                return render_template('register.html', form=form)
             new_admin = Admin(username_admin=username, password_hash=hashed_password, role=role)
             db.session.add(new_admin)
             flash('Admin account created successfully!', 'success')
         else:
-            existing_user = User.query.filter_by(username=username).first()
-            if existing_user:
-                flash('This user already exists. Please choose a different username.', 'warning')
-                return render_template('register.html', form=form)
             new_user = User(username=username, password_hash=hashed_password, role=role)
             db.session.add(new_user)
             flash('User account created successfully!', 'success')
@@ -47,18 +44,23 @@ def login():
     if form.validate_on_submit():
         username = form.username.data
         password = form.password.data
+
+        existing_admin = Admin.query.filter_by(username_admin=username).first()
         existing_user = User.query.filter_by(username=username).first()
-        existing_user_admin = Admin.query.filter_by(username_admin=username).first()
-        if existing_user_admin == username and check_password_hash(existing_user.password_hash, password):
+
+        if existing_admin and check_password_hash(existing_admin.password_hash, password):
+            login_user(existing_admin)  # <-- ADD THIS
             flash('Login successful!', "success")
             return redirect(url_for('main.admin_main'))
 
-
-        if existing_user_admin and check_password_hash(existing_user_admin.password_hash, password):
+        elif existing_user and check_password_hash(existing_user.password_hash, password):
+            login_user(existing_user)  # <-- ADD THIS
             flash("Login successful!", "success")
             return redirect(url_for('main.index'))
+
         else:
             flash('Invalid username or password', 'danger')
+
     return render_template('login.html', form=form)
 
 
