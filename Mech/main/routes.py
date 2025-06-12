@@ -10,6 +10,10 @@ import base64
 main = Blueprint('main', __name__, template_folder='templates')
 
 
+@main.route('/admin_main')
+def admin_main():
+    return render_template('admin.html')
+
 @main.route('/main')
 def index():
     return render_template('main.html')
@@ -33,11 +37,14 @@ def predict():
 def model_pred():
     # Sample training data
     data = [
-        (50000, 2015, 15000),
-        (30000, 2018, 20000),
-        (100000, 2012, 8000),
-        (70000, 2016, 12000),
-        (25000, 2020, 25000),
+        (500000, 1998, 15000),
+        (300000, 1995, 20000),
+        (100000, 1994, 8000),
+        (70000, 1997, 12000),
+        (250000, 2005, 25000),
+        (31000, 2000, 25000),
+        (425070, 2003, 25000),
+        (201111, 2006, 25000),
     ]
 
     X = [[mileage, year] for mileage, year, _ in data]
