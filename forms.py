@@ -19,8 +19,8 @@ class LoginForm(FlaskForm):
     password = PasswordField('Password', validators=[DataRequired()])
     submit = SubmitField('Login')
 
-class LogisticsForm(FlaskForm):
+class LinearForm(FlaskForm):
     car_brand = StringField('Car Brand', validators=[DataRequired(), Length(min=3, max=20)])
     mileage = IntegerField('Mileage (In kilometers)', validators=[DataRequired(), NumberRange(min=100000)])
-    man_year = IntegerField('Year of manufacture', validators=[DataRequired(), NumberRange(min=1997, max=2006)])
+    man_year = IntegerField('Year of manufacture(1990 - 2010)', validators=[DataRequired(), NumberRange(min=1990, max=2010)])
     submit = SubmitField('Predict')

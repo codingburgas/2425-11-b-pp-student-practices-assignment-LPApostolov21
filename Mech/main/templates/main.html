@@ -49,13 +49,23 @@
             color: white;
             border: none;
             border-radius: 5px;
-            cursor: pointer;
+            cursor: grab;
             font-size: 16px;
             transition: background-color 0.3s;
         }
 
         .this-button:hover {
             background-color: #0056b3;
+        }
+
+        .this-button-predict{
+            background-color: #0056b3;
+            cursor: grab;
+            font-size: 24px;
+            letter-spacing: 3px;
+            border-radius: 8px;
+            padding: 10px 20px;
+            text-align: center;
         }
     </style>
 </head>
@@ -80,7 +90,7 @@
             <h1 class="text-5xl md:text-6xl font-extrabold mb-8 drop-shadow-lg">
                 Find out the price of your car!
             </h1>
-            <div class="this-button">
+            <div class="this-button-predict">
                 <a href="{{ url_for('main.predict') }}">Predict here</a>
             </div>
         </div>
