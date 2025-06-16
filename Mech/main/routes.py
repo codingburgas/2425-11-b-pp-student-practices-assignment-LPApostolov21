@@ -112,9 +112,6 @@ def model_pred():
 @main.route('/admin/users')
 @login_required
 def view_users():
-    if current_user.role != 'admin':
-        flash('Access denied: Admins only.', 'danger')
-        return redirect(url_for('main.index'))
     users = User.query.all()
     return render_template('user_list.html', users=users)
 

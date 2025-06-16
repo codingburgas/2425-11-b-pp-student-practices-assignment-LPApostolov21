@@ -9,7 +9,7 @@ class RegisterForm(FlaskForm):
     confirm_password = PasswordField('Confirm Password', validators=[DataRequired(), EqualTo('password', message='Passwords must match.')])
     role = SelectField(
         'Select Role',
-        choices=[('admin', 'Admin'), ('user', 'User')],
+        choices=[('user', 'User'), ('admin', 'Admin')],
         validators=[DataRequired()]
     )
     submit = SubmitField('Register')
