@@ -118,9 +118,6 @@ def view_users():
 @main.route('/admin/delete_user/<int:user_id>', methods=['POST'])
 @login_required
 def delete_user(user_id):
-    if current_user.role != 'admin':
-        flash('Access denied: Admins only.', 'danger')
-        return redirect(url_for('main.index'))
     user = User.query.get_or_404(user_id)
     db.session.delete(user)
     db.session.commit()
