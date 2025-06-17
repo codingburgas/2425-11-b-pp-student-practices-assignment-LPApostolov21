@@ -75,7 +75,11 @@
                     <div class="col-md-6">
                         <h5 class="mb-3">📈 Prediction Chart</h5>
                         <img src="data:image/png;base64,{{ plot_url }}" alt="Prediction Plot" class="chart-img">
+                        <a href="{{ url_for('static', filename='prediction_chart.png') }}" download class="btn btn-sm btn-primary mt-3">
+                            Download Chart
+                        </a>
                     </div>
+
                 </div>
 
                 <div class="text-center mt-4">

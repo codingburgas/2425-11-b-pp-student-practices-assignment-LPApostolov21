@@ -6,6 +6,7 @@ from sklearn.linear_model import LinearRegression
 import matplotlib.pyplot as plt
 import io
 import base64
+import os
 
 main = Blueprint('main', __name__, template_folder='templates')
 
@@ -76,38 +77,46 @@ def model_pred():
 
     fig, ax = plt.subplots()
 
-    # Scatter plot of training data (mileage vs price)
+    # Scatter plot of training data
     mileage_data = [m for m, _, _ in data]
     price_data = [p for _, _, p in data]
     ax.scatter(mileage_data, price_data, color='blue', label='Training Data')
 
-    # Scatter plot of predicted car price
+    # Predicted point
     ax.scatter(car.mileage, predicted_price, color='red', label='Predicted Car', marker='x', s=100)
 
-    # --- Add regression line ---
-
-    # Generate mileage values for line plot (cover the range in data)
-    mileage_range = list(range(min(mileage_data), max(mileage_data), 1000))  # step 1000 for smoothness
-
-    # Predict prices for each mileage at the fixed car.man_year
+    # Regression line
+    mileage_range = list(range(min(mileage_data), max(mileage_data), 1000))
     predicted_line_prices = [predict_price(mileage, car.man_year) for mileage in mileage_range]
-
-    # Plot the regression line
-    ax.plot(mileage_range, predicted_line_prices, color='green', label=f'Regression Line (Year={car.man_year})', linewidth=2)
+    ax.plot(mileage_range, predicted_line_prices, color='green',
+            label=f'Regression Line (Year={car.man_year})', linewidth=2)
 
     ax.set_xlabel('Mileage')
     ax.set_ylabel('Price')
     ax.set_title('Car Price Prediction')
     ax.legend()
 
+    # Save to buffer and static file
     buf = io.BytesIO()
-    plt.savefig(buf, format='png')
+    fig.savefig(buf, format='png')
     buf.seek(0)
+
+    # Save to file
+    static_path = os.path.join('static', 'prediction_chart.png')
+    with open(static_path, 'wb') as f:
+        f.write(buf.getbuffer())
+
+    # Encode for inline display
     image_base64 = base64.b64encode(buf.getvalue()).decode('utf-8')
     buf.close()
     plt.close()
 
-    return render_template('model_pred.html', car=car, predicted_price=round(predicted_price, 2), plot_url=image_base64)
+    return render_template(
+        'model_pred.html',
+        car=car,
+        predicted_price=round(predicted_price, 2),
+        plot_url=image_base64
+    )
 
 @main.route('/admin/users')
 @login_required
