@@ -78,10 +78,23 @@
                         <a href="{{ url_for('static', filename='prediction_chart.png') }}" download class="btn btn-sm btn-primary mt-3">
                             Download Chart
                         </a>
-                    </div>
 
+                        <!-- 📧 Email button -->
+                        <form action="{{ url_for('main.send_email') }}" method="post" class="mt-2">
+                            <button type="submit" class="btn btn-sm btn-warning">
+                                📧 Email Chart to ktotev@codingburgas.bg
+                            </button>
+                        </form>
+                    </div>
                 </div>
 
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                  {% if messages %}
+                    {% for category, message in messages %}
+                      <div class="alert">{{ message }}</div>
+                    {% endfor %}
+                  {% endif %}
+                {% endwith %}
                 <div class="text-center mt-4">
                     <a href="{{ url_for('main.predict') }}" class="btn btn-custom">
                         🔁 Predict Another Car

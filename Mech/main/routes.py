@@ -6,7 +6,13 @@ from sklearn.linear_model import LinearRegression
 import matplotlib.pyplot as plt
 import io
 import base64
+import matplotlib
+matplotlib.use('Agg')
 import os
+import smtplib
+from email.mime.multipart import MIMEMultipart
+from email.mime.base import MIMEBase
+from email import encoders
 
 main = Blueprint('main', __name__, template_folder='templates')
 
@@ -117,6 +123,40 @@ def model_pred():
         predicted_price=round(predicted_price, 2),
         plot_url=image_base64
     )
+
+@main.route('/send_email', methods=['POST'])
+@login_required
+def send_email():
+    sender_email = "LPApostolov21@codingburgas.bg"
+    app_password = "my_secret_key"
+    receiver_email = "ktotev@codingburgas.bg"
+    subject = "🚗 Car Price Prediction Chart"
+    body = "Attached is the chart from the latest car price prediction."
+
+    chart_path = os.path.join('static', 'prediction_chart.png')
+
+    msg = MIMEMultipart()
+    msg['From'] = sender_email
+    msg['To'] = receiver_email
+    msg['Subject'] = subject
+
+    try:
+        with open(chart_path, 'rb') as f:
+            part = MIMEBase('application', 'octet-stream')
+            part.set_payload(f.read())
+            encoders.encode_base64(part)
+            part.add_header('Content-Disposition', 'attachment', filename='prediction_chart.png')
+            msg.attach(part)
+
+        with smtplib.SMTP_SSL('smtp.gmail.com', 465) as server:
+            server.login(sender_email, app_password)
+            server.sendmail(sender_email, receiver_email, msg.as_string())
+
+        flash("✅ Email sent successfully to ktotev@codingburgas.bg", "success")
+    except Exception as e:
+        flash(f"❌ Failed to send email: {str(e)}", "danger")
+
+    return redirect(url_for('main.model_pred'))
 
 @main.route('/admin/users')
 @login_required
