@@ -16,6 +16,13 @@ from email import encoders
 
 main = Blueprint('main', __name__, template_folder='templates')
 
+
+@main.route('/profile')
+@login_required
+def profile():
+    existing_user = User.query.get(current_user.id)
+    return render_template('profile.html', user=existing_user)
+
 @main.route('/admin_main')
 @login_required
 def admin_main():
