@@ -6,6 +6,21 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- Bootstrap 5 CDN -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+  <style>
+    .scrolling-wrapper {
+      overflow-x: auto;
+      display: flex;
+      flex-wrap: nowrap;
+      gap: 1rem;
+      padding-bottom: 1rem;
+    }
+    .car-card {
+      min-width: 250px;
+      flex: 0 0 auto;
+    }
+  </style>
 </head>
 <body>
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -18,7 +33,7 @@
         <ul class="navbar-nav align-items-center gap-2">
           <li class="nav-item">
             <a class="nav-link d-flex align-items-center gap-1" href="{{ url_for('main.predict') }}">
-              <i class="bi bi-person-circle"></i> Back to predicting
+              <i class="bi bi-arrow-left-circle"></i> Back to predicting
             </a>
           </li>
         </ul>
@@ -28,7 +43,7 @@
 
   <div class="container mt-5">
     <h2 class="mb-4">Profile</h2>
-    <ul class="list-group">
+    <ul class="list-group mb-5">
       <li class="list-group-item">
         <strong>Username:</strong> {{ user.username }}
       </li>
@@ -36,11 +51,23 @@
         <strong>Role:</strong> {{ user.role }}
       </li>
     </ul>
+
+    <h4 class="mb-3">Example Car Listings</h4>
+    <div class="scrolling-wrapper">
+      {% for car in example_cars %}
+      <div class="card car-card shadow-sm">
+        <div class="card-body">
+          <h5 class="card-title">{{ car.brand }}</h5>
+          <p class="card-text mb-1"><strong>Mileage:</strong> {{ car.mileage }} km</p>
+          <p class="card-text mb-1"><strong>Year:</strong> {{ car.year }}</p>
+          <p class="card-text"><strong>Price:</strong> ${{ car.price }}</p>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
   </div>
 
-  <!-- Bootstrap JS (for navbar toggling) -->
+  <!-- Bootstrap JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-  <!-- Bootstrap Icons -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 </body>
 </html>

@@ -20,8 +20,22 @@ main = Blueprint('main', __name__, template_folder='templates')
 @main.route('/profile')
 @login_required
 def profile():
-    existing_user = User.query.get(current_user.id)
-    return render_template('profile.html', user=existing_user)
+    example_cars = [
+        {"brand": "Toyota", "mileage": 55000, "year": 2018, "price": 13500},
+        {"brand": "BMW", "mileage": 72000, "year": 2016, "price": 17000},
+        {"brand": "Honda", "mileage": 45000, "year": 2019, "price": 14200},
+        {"brand": "Audi", "mileage": 61000, "year": 2017, "price": 19000},
+        {"brand": "Mazda", "mileage": 38000, "year": 2020, "price": 12500},
+        {"brand": "Ford", "mileage": 83000, "year": 2015, "price": 9800},
+    ]
+
+    # If you really need to query the user from DB (instead of just using current_user):
+    # user = User.query.get(current_user.id)
+    # return render_template('profile.html', user=user, example_cars=example_cars)
+
+    # Otherwise, this is totally fine:
+    return render_template('profile.html', user=current_user, example_cars=example_cars)
+
 
 @main.route('/admin_main')
 @login_required
