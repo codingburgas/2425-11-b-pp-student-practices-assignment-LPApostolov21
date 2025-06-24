@@ -17,6 +17,12 @@ from email import encoders
 main = Blueprint('main', __name__, template_folder='templates')
 
 
+
+@main.route('/market')
+@login_required
+def market():
+    return render_template('market.html')
+
 @main.route('/profile')
 @login_required
 def profile():
