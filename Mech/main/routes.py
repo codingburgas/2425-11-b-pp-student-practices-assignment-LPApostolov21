@@ -21,7 +21,52 @@ main = Blueprint('main', __name__, template_folder='templates')
 @main.route('/market')
 @login_required
 def market():
-    return render_template('market.html')
+
+    car = Cars.query.order_by(Cars.id.desc()).first()
+
+    if not car:
+        flash("No car data available.")
+        return redirect(url_for('main.predict'))
+
+    # Data for regression
+    data = [
+        (320000, 1992, 3200),
+        (280000, 1995, 4500),
+        (350000, 1996, 3800),
+        (310000, 1998, 5200),
+        (400000, 1990, 2100),
+        (390000, 1993, 3050),
+        (270000, 2000, 5900),
+        (330000, 1997, 4700),
+        (300000, 1999, 4250),
+        (360000, 1991, 3100),
+        (340000, 1994, 3600),
+        (260000, 2001, 4950),
+        (295000, 1996, 2800),
+        (130000, 2005, 6000),
+        (280000, 2003, 3300),
+        (270000, 2004, 3900),
+        (250000, 2007, 5100),
+        (320000, 2002, 2950),
+        (310000, 2006, 5750),
+        (380000, 1990, 2200)
+    ]
+
+    # Train model
+    X = [[mileage, year] for mileage, year, _ in data]
+    y = [price for _, _, price in data]
+    model = LinearRegression()
+    model.fit(X, y)
+
+    # Predict price
+    predicted_price = model.predict([[car.mileage, car.man_year]])[0]
+
+    return render_template(
+        'market.html',
+        brand=car.car_brand,
+        mileage=car.mileage,
+        predicted_price=round(predicted_price, 2)
+    )
 
 @main.route('/profile')
 @login_required
