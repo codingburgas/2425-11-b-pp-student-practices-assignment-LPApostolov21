@@ -49,7 +49,37 @@ def market():
         (250000, 2007, 5100),
         (320000, 2002, 2950),
         (310000, 2006, 5750),
-        (380000, 1990, 2200)
+        (380000, 1995, 2200),
+        (240000, 2008, 5500),
+        (180000, 2010, 7200),
+        (150000, 2012, 7500),
+        (200000, 2011, 6800),
+        (220000, 2009, 6100),
+        (140000, 2014, 8200),
+        (100000, 2015, 8900),
+        (175000, 2013, 7700),
+        (90000, 2016, 9200),
+        (80000, 2017, 9600),
+        (195000, 2011, 6900),
+        (160000, 2012, 7400),
+        (230000, 2008, 5650),
+        (145000, 2013, 8000),
+        (120000, 2014, 8500),
+        (105000, 2016, 9100),
+        (85000, 2018, 9800),
+        (75000, 2019, 10200),
+        (60000, 2020, 11000),
+        (50000, 2021, 11500),
+        (45000, 2022, 12000),
+        (38000, 2023, 12500),
+        (32000, 2024, 13000),
+        (90000, 2017, 9500),
+        (190000, 2009, 6050),
+        (210000, 2010, 6400),
+        (205000, 2009, 6150),
+        (225000, 2007, 5300),
+        (285000, 2005, 4700),
+        (310000, 2006, 5600)
     ]
 
     # Train model
@@ -158,7 +188,37 @@ def model_pred():
         (250000, 2007, 5100),
         (320000, 2002, 2950),
         (310000, 2006, 5750),
-        (380000, 1990, 2200)
+        (380000, 1995, 2200),
+        (240000, 2008, 5500),
+        (180000, 2010, 7200),
+        (150000, 2012, 7500),
+        (200000, 2011, 6800),
+        (220000, 2009, 6100),
+        (140000, 2014, 8200),
+        (100000, 2015, 8900),
+        (175000, 2013, 7700),
+        (90000, 2016, 9200),
+        (80000, 2017, 9600),
+        (195000, 2011, 6900),
+        (160000, 2012, 7400),
+        (230000, 2008, 5650),
+        (145000, 2013, 8000),
+        (120000, 2014, 8500),
+        (105000, 2016, 9100),
+        (85000, 2018, 9800),
+        (75000, 2019, 10200),
+        (60000, 2020, 11000),
+        (50000, 2021, 11500),
+        (45000, 2022, 12000),
+        (38000, 2023, 12500),
+        (32000, 2024, 13000),
+        (90000, 2017, 9500),
+        (190000, 2009, 6050),
+        (210000, 2010, 6400),
+        (205000, 2009, 6150),
+        (225000, 2007, 5300),
+        (285000, 2005, 4700),
+        (310000, 2006, 5600)
     ]
 
     X = [[mileage, year] for mileage, year, _ in data]
@@ -219,39 +279,6 @@ def model_pred():
         plot_url=image_base64
     )
 
-@main.route('/send_email', methods=['POST'])
-@login_required
-def send_email():
-    sender_email = "LPApostolov21@codingburgas.bg"
-    app_password = "my_secret_key"
-    receiver_email = "ktotev@codingburgas.bg"
-    subject = "🚗 Car Price Prediction Chart"
-    body = "Attached is the chart from the latest car price prediction."
-
-    chart_path = os.path.join('static', 'prediction_chart.png')
-
-    msg = MIMEMultipart()
-    msg['From'] = sender_email
-    msg['To'] = receiver_email
-    msg['Subject'] = subject
-
-    try:
-        with open(chart_path, 'rb') as f:
-            part = MIMEBase('application', 'octet-stream')
-            part.set_payload(f.read())
-            encoders.encode_base64(part)
-            part.add_header('Content-Disposition', 'attachment', filename='prediction_chart.png')
-            msg.attach(part)
-
-        with smtplib.SMTP_SSL('smtp.gmail.com', 465) as server:
-            server.login(sender_email, app_password)
-            server.sendmail(sender_email, receiver_email, msg.as_string())
-
-        flash("✅ Email sent successfully to ktotev@codingburgas.bg", "success")
-    except Exception as e:
-        flash(f"❌ Failed to send email: {str(e)}", "danger")
-
-    return redirect(url_for('main.model_pred'))
 
 @main.route('/admin/users')
 @login_required
@@ -267,3 +294,9 @@ def delete_user(user_id):
     db.session.commit()
     flash(f'User {user.username} has been deleted.', 'success')
     return redirect(url_for('main.view_users'))
+
+
+@main.route('/progress')
+@login_required
+def progress():
+    return('Hellow World')
