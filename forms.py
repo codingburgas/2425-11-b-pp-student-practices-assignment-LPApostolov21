@@ -22,5 +22,5 @@ class LoginForm(FlaskForm):
 class LinearForm(FlaskForm):
     car_brand = StringField('Car Brand', validators=[DataRequired(), Length(min=3, max=20)])
     mileage = IntegerField('Mileage (In kilometers)', validators=[DataRequired(), NumberRange(min=100000)])
-    man_year = IntegerField('Year of manufacture(1990 - 2010)', validators=[DataRequired(), NumberRange(min=1990, max=2025)])
+    man_year = IntegerField('Year of manufacture(1990 - 2025)', validators=[DataRequired(), NumberRange(min=1990, max=2025)])
     submit = SubmitField('Predict')

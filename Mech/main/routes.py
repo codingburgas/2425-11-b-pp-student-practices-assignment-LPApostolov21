@@ -165,7 +165,7 @@ def predict():
         return redirect(url_for('main.model_pred'))
     return render_template('predict.html', form=form)
 
-@main.route('/model_pred', methods=['GET'])
+@main.route('/model_pred', methods=['GET', 'POST'])
 @login_required
 def model_pred():
     data = [
@@ -229,24 +229,48 @@ def model_pred():
     def predict_price(mileage, man_year):
         return model.predict([[mileage, man_year]])[0]
 
-    car = Cars.query.order_by(Cars.id.desc()).first()
-    if not car:
-        flash("No car data available.")
-        return redirect(url_for('main.predict'))
+    if request.method == 'POST':
+        # Extract user input from form
+        car_brand = request.form.get('car_brand')
+        mileage = request.form.get('mileage')
+        man_year = request.form.get('man_year')
+
+        # Basic validation - you can improve this as needed
+        if not car_brand or not mileage or not man_year:
+            flash('Please provide all required fields.')
+            return redirect(url_for('main.predict'))
+
+        try:
+            mileage = int(mileage)
+            man_year = int(man_year)
+        except ValueError:
+            flash('Mileage and Year must be numbers.')
+            return redirect(url_for('main.predict'))
+
+        # Save new car data to DB
+        new_car = Cars(car_brand=car_brand, mileage=mileage, man_year=man_year)
+        db.session.add(new_car)
+        db.session.commit()
+
+        car = new_car
+    else:
+        # If GET or no POST data, get latest car for prediction
+        car = Cars.query.order_by(Cars.id.desc()).first()
+        if not car:
+            flash("No car data available.")
+            return redirect(url_for('main.predict'))
 
     predicted_price = predict_price(car.mileage, car.man_year)
 
+    # Plot code same as before...
+
     fig, ax = plt.subplots()
 
-    # Scatter plot of training data
     mileage_data = [m for m, _, _ in data]
     price_data = [p for _, _, p in data]
     ax.scatter(mileage_data, price_data, color='blue', label='Training Data')
-
-    # Predicted point
     ax.scatter(car.mileage, predicted_price, color='red', label='Predicted Car', marker='x', s=100)
 
-    # Regression line
     mileage_range = list(range(min(mileage_data), max(mileage_data), 1000))
     predicted_line_prices = [predict_price(mileage, car.man_year) for mileage in mileage_range]
     ax.plot(mileage_range, predicted_line_prices, color='green',
@@ -257,17 +281,14 @@ def model_pred():
     ax.set_title('Car Price Prediction')
     ax.legend()
 
-    # Save to buffer and static file
     buf = io.BytesIO()
     fig.savefig(buf, format='png')
     buf.seek(0)
 
-    # Save to file
     static_path = os.path.join('static', 'prediction_chart.png')
     with open(static_path, 'wb') as f:
         f.write(buf.getbuffer())
 
-    # Encode for inline display
     image_base64 = base64.b64encode(buf.getvalue()).decode('utf-8')
     buf.close()
     plt.close()

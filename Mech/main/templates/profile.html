@@ -27,27 +27,32 @@
 </head>
 <body>
   <nav class="navbar navbar-expand-lg bg-body-tertiary border-bottom shadow-sm">
-    <div class="container-fluid">
-      <a class="navbar-brand">MyProfile</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-        <ul class="navbar-nav align-items-center gap-3">
-          <li class="nav-item">
-            <a class="nav-link d-flex align-items-center gap-1" href="{{ url_for('main.model_pred') }}">
-              <i class="bi bi-arrow-left-circle"></i> Back to your prediction
-            </a>
-          </li>
-          <li class="nav-item">
-            <button class="btn btn-outline-secondary theme-toggle d-flex align-items-center" id="themeToggle">
-              <i class="bi bi-moon-stars-fill me-2" id="themeIcon"></i> Toggle Theme
-            </button>
-          </li>
-        </ul>
-      </div>
+  <div class="container-fluid">
+    <a class="navbar-brand">MyProfile</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+      <ul class="navbar-nav align-items-center gap-3">
+        <li class="nav-item">
+          <a class="nav-link d-flex align-items-center gap-1" href="{{ url_for('main.model_pred') }}">
+            <i class="bi bi-arrow-left-circle"></i> Back to your prediction
+          </a>
+        </li>
+        <li class="nav-item">
+          <button class="btn btn-outline-secondary theme-toggle d-flex align-items-center" id="themeToggle">
+            <i class="bi bi-moon-stars-fill me-2" id="themeIcon"></i> Toggle Theme
+          </button>
+        </li>
+        <li class="nav-item">
+          <a class="btn btn-outline-danger d-flex align-items-center gap-1" href="{{ url_for('auth.logout') }}">
+            <i class="bi bi-box-arrow-right"></i> Logout
+          </a>
+        </li>
+      </ul>
     </div>
-  </nav>
+  </div>
+</nav>
 
   <div class="container mt-5">
     <h2 class="mb-4">Profile</h2>
