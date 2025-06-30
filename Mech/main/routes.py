@@ -255,8 +255,7 @@ def model_pred():
             return redirect(url_for('main.predict'))
 
     predicted_price = predict_price(car.mileage, car.man_year)
-
-    # Update car with predicted_price and commit
+    predicted_price = round(predicted_price)
     car.predicted_price = predicted_price
     db.session.commit()
 
@@ -294,7 +293,7 @@ def model_pred():
     return render_template(
         'model_pred.html',
         car=car,
-        predicted_price=round(predicted_price, 2),
+        predicted_price=round(predicted_price),
         plot_url=image_base64
     )
 

@@ -1,5 +1,5 @@
-from flask import Blueprint, render_template, redirect, url_for, flash
-from flask_login import logout_user, login_user  # <-- ADD THIS
+from flask import Blueprint, render_template, redirect, url_for, flash, request
+from flask_login import logout_user, login_user
 from werkzeug.security import generate_password_hash, check_password_hash
 from forms import RegisterForm, LoginForm
 from models import db, User, Admin
@@ -26,15 +26,15 @@ def register():
         if role == 'admin':
             new_admin = Admin(username_admin=username, password_hash=hashed_password, role=role)
             db.session.add(new_admin)
+            db.session.commit()  # <--- FIX: Commit for admin
             flash('Admin account created successfully!', 'success')
             return redirect(url_for('main.admin_main'))
         else:
             new_user = User(username=username, password_hash=hashed_password, role=role)
             db.session.add(new_user)
+            db.session.commit()
             flash('User account created successfully!', 'success')
-
-        db.session.commit()
-        return redirect(url_for('main.index'))
+            return redirect(url_for('main.index'))
 
     return render_template('register.html', form=form)
 
@@ -50,13 +50,13 @@ def login():
         existing_user = User.query.filter_by(username=username).first()
 
         if existing_admin and check_password_hash(existing_admin.password_hash, password):
-            login_user(existing_admin)  # <-- ADD THIS
-            flash('Login successful!', "success")
+            login_user(existing_admin)
+            flash('Admin login successful!', "success")
             return redirect(url_for('main.admin_main'))
 
         elif existing_user and check_password_hash(existing_user.password_hash, password):
-            login_user(existing_user)  # <-- ADD THIS
-            flash("Login successful!", "success")
+            login_user(existing_user)
+            flash("User login successful!", "success")
             return redirect(url_for('main.index'))
 
         else:
