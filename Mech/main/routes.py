@@ -19,7 +19,6 @@ main = Blueprint('main', __name__, template_folder='templates')
 
 
 @main.route('/market')
-@login_required
 def market():
 
     car = Cars.query.order_by(Cars.id.desc()).first()
@@ -99,7 +98,6 @@ def market():
     )
 
 @main.route('/profile')
-@login_required
 def profile():
     example_cars = [
         {"brand": "Toyota", "mileage": 55000, "year": 2018, "price": 13500,
@@ -142,17 +140,14 @@ def profile():
 
 
 @main.route('/admin_main')
-@login_required
 def admin_main():
     return render_template('admin.html')
 
 @main.route('/main')
-@login_required
 def index():
     return render_template('main.html')
 
 @main.route('/predict', methods=['GET', 'POST'])
-@login_required
 def predict():
     form = LinearForm()
     if form.validate_on_submit():
@@ -166,7 +161,6 @@ def predict():
     return render_template('predict.html', form=form)
 
 @main.route('/model_pred', methods=['GET', 'POST'])
-@login_required
 def model_pred():
     data = [
         (320000, 1992, 3200),
@@ -247,7 +241,7 @@ def model_pred():
             flash('Mileage and Year must be numbers.')
             return redirect(url_for('main.predict'))
 
-        # Save new car data to DB
+        # Save new car data to DB (without predicted price yet)
         new_car = Cars(car_brand=car_brand, mileage=mileage, man_year=man_year)
         db.session.add(new_car)
         db.session.commit()
@@ -261,6 +255,10 @@ def model_pred():
             return redirect(url_for('main.predict'))
 
     predicted_price = predict_price(car.mileage, car.man_year)
+
+    # Update car with predicted_price and commit
+    car.predicted_price = predicted_price
+    db.session.commit()
 
     # Plot code same as before...
 
@@ -301,14 +299,13 @@ def model_pred():
     )
 
 
+
 @main.route('/admin/users')
-@login_required
 def view_users():
     users = User.query.all()
     return render_template('user_list.html', users=users)
 
 @main.route('/admin/delete_user/<int:user_id>', methods=['POST'])
-@login_required
 def delete_user(user_id):
     user = User.query.get_or_404(user_id)
     db.session.delete(user)
@@ -318,6 +315,6 @@ def delete_user(user_id):
 
 
 @main.route('/progress')
-@login_required
 def progress():
-    return('Hellow World')
+    last_car = Cars.query.order_by(Cars.id.desc()).first()
+    return render_template('progress.html', car=last_car)

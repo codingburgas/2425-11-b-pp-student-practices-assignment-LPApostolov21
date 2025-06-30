@@ -27,13 +27,14 @@ def register():
             new_admin = Admin(username_admin=username, password_hash=hashed_password, role=role)
             db.session.add(new_admin)
             flash('Admin account created successfully!', 'success')
+            return redirect(url_for('main.admin_main'))
         else:
             new_user = User(username=username, password_hash=hashed_password, role=role)
             db.session.add(new_user)
             flash('User account created successfully!', 'success')
 
         db.session.commit()
-        return redirect(url_for('auth.login'))
+        return redirect(url_for('main.index'))
 
     return render_template('register.html', form=form)
 

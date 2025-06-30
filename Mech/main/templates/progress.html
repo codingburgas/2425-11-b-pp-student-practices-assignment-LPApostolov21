@@ -1,0 +1,8 @@
+{% if car %}
+  <h1>Last Car Added</h1>
+  <p>Brand: {{ car.car_brand }}</p>
+  <p>Year: {{ car.man_year }}</p>
+  <p>Price: {{ car.price }}</p>
+{% else %}
+  <p>No car data available.</p>
+{% endif %}

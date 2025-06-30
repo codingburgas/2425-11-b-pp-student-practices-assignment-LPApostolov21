@@ -21,6 +21,9 @@ class Cars(db.Model):
     car_brand = db.Column(db.String(20), nullable=False)
     mileage = db.Column(db.Integer, nullable=False)
     man_year = db.Column(db.Integer, nullable=False)
+    predicted_price = db.Column(db.Float, nullable=True)  # NEW: predicted price column
+
+
 
 class Admin(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
