@@ -98,6 +98,7 @@ def market():
     )
 
 @main.route('/profile')
+@login_required
 def profile():
     example_cars = [
         {"brand": "Toyota", "mileage": 55000, "year": 2018, "price": 3500,
@@ -131,11 +132,8 @@ def profile():
          "image": "https://www-europe.nissan-cdn.net/content/dam/Nissan/bulgaria/juke/F16/Juke_Desktop-Tablet_3000x1160.jpg.ximg.l_full_m.smart.jpg"}
     ]
 
-    # If you really need to query the user from DB (instead of just using current_user):
-    # user = User.query.get(current_user.id)
-    # return render_template('profile.html', user=user, example_cars=example_cars)
+    user = User.query.get(current_user.id)
 
-    # Otherwise, this is totally fine:
     return render_template('profile.html', user=current_user, example_cars=example_cars)
 
 
