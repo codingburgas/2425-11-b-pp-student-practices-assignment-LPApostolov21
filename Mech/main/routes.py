@@ -100,34 +100,34 @@ def market():
 @main.route('/profile')
 def profile():
     example_cars = [
-        {"brand": "Toyota", "mileage": 55000, "year": 2018, "price": 13500,
+        {"brand": "Toyota", "mileage": 55000, "year": 2018, "price": 3500,
          "image": "https://img-optimize.toyota-europe.com/resize/ccis/680x680/zip/bg/product-token/f3520d05-ebaf-4991-adfc-fbea35192b82/vehicle/78088/padding/50,50,50,50/image-quality/70/day-exterior-03_2VN.png"},
 
-        {"brand": "BMW", "mileage": 72000, "year": 2016, "price": 17000,
+        {"brand": "BMW", "mileage": 72000, "year": 2016, "price": 7000,
          "image": "https://www.bmw.bg/content/dam/bmw/common/all-models/m-series/m8-coupe/2022/navigation/bmw-8series-coupe-modellfinder.png"},
 
-        {"brand": "Honda", "mileage": 45000, "year": 2019, "price": 14200,
+        {"brand": "Honda", "mileage": 45000, "year": 2019, "price": 4200,
          "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTQMfyGxQjEh4nd3Kpc-NjowoP4uiWV9I-lOw&s"},
 
-        {"brand": "Audi", "mileage": 61000, "year": 2017, "price": 19000,
+        {"brand": "Audi", "mileage": 61000, "year": 2017, "price": 9000,
          "image": "https://autodir.bg/wp-content/uploads/2024/11/gamata-avtomobili-na-audi-za-2025-g-oshte-po-usyvyrshenstvan-a3-optimiziran-a5-i-predstoyashti-elekt.jpg"},
 
-        {"brand": "Mazda", "mileage": 38000, "year": 2020, "price": 12500,
+        {"brand": "Mazda", "mileage": 38000, "year": 2020, "price": 2500,
          "image": "https://7cars.bg/wp-content/uploads/2024/05/3-copy-4.jpg"},
 
         {"brand": "Ford", "mileage": 83000, "year": 2015, "price": 9800,
          "image": "https://ford-cdn.fsn1.your-objectstorage.com/koe55a7btgkbs8y0s9qihcuyiw8e"},
 
-        {"brand": "Mercedes-Benz", "mileage": 59000, "year": 2018, "price": 22000,
+        {"brand": "Mercedes-Benz", "mileage": 59000, "year": 2018, "price": 2000,
          "image": "https://images.netdirector.co.uk/gforces-auto/image/upload/w_412,h_309,dpr_2.0,q_auto,c_fill,f_auto,fl_lossy/auto-client/e8a412e90a1a356ab8ffd5e2aaa7e268/untitled_123.png"},
 
-        {"brand": "Volkswagen", "mileage": 47000, "year": 2021, "price": 17800,
+        {"brand": "Volkswagen", "mileage": 47000, "year": 2021, "price": 7800,
          "image": "https://groupcms-services-api.porsche-holding.com/dam/images/b9f671ae257ad59305d0f5e7e46c9775cda8eb8a/e2b72b06274ea54d0111788da54530e0/b1c4d4ab-997d-4178-b161-251ba1f63e29/crop:SMART/resize:3840:1743/derneuegolfvariantfrontside"},
 
-        {"brand": "Hyundai", "mileage": 52000, "year": 2020, "price": 13900,
+        {"brand": "Hyundai", "mileage": 52000, "year": 2020, "price": 3900,
          "image": "https://hips.hearstapps.com/hmg-prod/images/2025-hyundai-tucson-phev-113-660424e2cef90.jpg?crop=0.753xw:0.637xh;0.0994xw,0.322xh&resize=2048:*"},
 
-        {"brand": "Nissan", "mileage": 61000, "year": 2019, "price": 12700,
+        {"brand": "Nissan", "mileage": 61000, "year": 2019, "price": 2700,
          "image": "https://www-europe.nissan-cdn.net/content/dam/Nissan/bulgaria/juke/F16/Juke_Desktop-Tablet_3000x1160.jpg.ximg.l_full_m.smart.jpg"}
     ]
 
