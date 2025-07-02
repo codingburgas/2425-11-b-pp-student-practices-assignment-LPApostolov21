@@ -54,3 +54,8 @@ project-root/
 </code>
 </pre>
 
+<h3>How to Download</h3>
+Press the button on the top right corner: "Code"
+-after that extract the files
+-open the project from a ITE software
+-in the terminal write: "flask run --debug"/"python run app.py"
